@@ -31,7 +31,7 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          Centered dropdown
+          Select city
         </button>
         <ul [class.show]="isDropdownOpen" class="dropdown-menu dropdown-menu-center">
           <li class="dropdown-item" *ngFor="let city of cities" (click)="selectCity(city)">
@@ -43,14 +43,43 @@
   </form>
 
   <main class="infoList">
-    <div *ngIf="(weatherData | async) as data">
+    <div *ngIf="(weatherData | async) as data; else spinner">
       <h4>{{ data.location.name }} weather</h4>
       <ul class="list-group">
-        <li class="list-group-item">A second item</li>
-        <li class="list-group-item">A third item</li>
-        <li class="list-group-item">A fourth item</li>
-        <li class="list-group-item">And a fifth one</li>
+        <li class="list-group-item">Temperature: {{ data.current.temp_c }}°C ({{ data.current.temp_f }}°F)</li>
+        <li class="list-group-item">Humidity: {{ data.current.humidity }}%</li>
+        <li class="list-group-item">Wind Speed: {{ data.current.wind_kph }} km/h ({{ data.current.wind_mph }} mph)</li>
+        <li class="list-group-item">Weather Condition: {{ data.current.condition.text }}</li>
       </ul>
     </div>
   </main>
+
+  <ng-template #spinner>
+    <article class="spinner">
+      <h4> Loading... </h4>
+      <div class="spinner-border text-secondary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </article>
+  </ng-template>
+
+</div>
+
+
+<div class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>

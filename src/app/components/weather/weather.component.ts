@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../../services/weather.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { WeatherResponseModel } from '../../weather.response.model';
+import { WeatherResponseModel } from '../../models/weather.response.model';
 
 @Component({
   selector: 'app-weather',
@@ -14,6 +14,7 @@ export class WeatherComponent implements OnInit {
   public form: FormGroup;
   public weatherData: Observable<WeatherResponseModel>;
   public cities: string[] = ['Warsaw', 'Berlin', 'London', 'Paris', 'Rome', 'Barcelona', 'Amsterdam', 'Bucharest'];
+  public savedCity: string;
 
   public isDropdownOpen: boolean = false;
 
@@ -26,8 +27,8 @@ export class WeatherComponent implements OnInit {
     this.form = this.formBuilder.group({
       city: ['', Validators.required]
     });
-    const citySaved: string = JSON.parse(JSON.stringify(localStorage.getItem('city')));
-    this.getWeatherData(citySaved);
+    this.savedCity = JSON.parse(JSON.stringify(localStorage.getItem('city')));
+    this.weatherData = this.weatherService.getLocationCityWeather(this.savedCity);
   }
 
   public getCityFormField() {
@@ -39,21 +40,14 @@ export class WeatherComponent implements OnInit {
   }
 
   public selectCity(city: string): void {
-    this.getCityFormField()?.setValue(city);
+    this.weatherData = this.weatherService.getLocationCityWeather(city);
     this.toggleDropdown();
-    this.getWeatherData(city);
   }
 
   public findCertainCityWeather(): void {
     const cityFind = this.getCityFormField()?.value;
-    if (cityFind) {
-      this.getWeatherData(cityFind);
-      localStorage.setItem('city', cityFind);
-    }
+    this.weatherData = this.weatherService.getLocationCityWeather(cityFind);
+    localStorage.setItem('city', cityFind);
   }
 
-  private getWeatherData(city: string): void {
-    this.weatherData = this.weatherService.getLocationCityWeather(city);
-  }
 }
-
