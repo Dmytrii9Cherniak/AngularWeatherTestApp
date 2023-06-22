@@ -27,7 +27,7 @@ export class WeatherComponent implements OnInit {
       city: ['', Validators.required]
     });
     this.savedCity = JSON.parse(JSON.stringify('city'));
-    this.getWeatherData(this.savedCity);
+    this.weatherData = this.weatherService.getLocationCityWeather(this.savedCity);
   }
 
   public getCityFormField() {
@@ -39,19 +39,14 @@ export class WeatherComponent implements OnInit {
   }
 
   public selectCity(city: string): void {
-    this.getWeatherData(city);
+    this.weatherData = this.weatherService.getLocationCityWeather(city);
     this.toggleDropdown();
   }
 
   public findCertainCityWeather(): void {
     const cityFind = this.getCityFormField()?.value;
-    this.getWeatherData(cityFind);
+    this.weatherData = this.weatherService.getLocationCityWeather(cityFind);
     localStorage.setItem('city', cityFind);
-  }
-
-  private getWeatherData(city: string): void {
-    this.weatherData = this.weatherService.getLocationCityWeather(city);
-
   }
 
 }
