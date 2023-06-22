@@ -46,5 +46,9 @@ export interface WeatherResponseModel {
     name: string,
     region: string,
     tz_iz: string
+  },
+  error: {
+      code: number,
+      message: string
   }
 }

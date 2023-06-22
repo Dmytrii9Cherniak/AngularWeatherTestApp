@@ -1,5 +1,6 @@
 <div class="weatherPage">
   <h4 class="he">Weather App</h4>
+
   <form [formGroup]="form">
     <nav class="form-group">
       <h4>Find your city to find out the weather</h4>
@@ -15,9 +16,7 @@
           class="btn btn-primary"
           (click)="findCertainCityWeather()"
           [disabled]="form.invalid"
-        >
-          Find
-        </button>
+        > Find </button>
       </div>
     </nav>
 
@@ -43,43 +42,29 @@
   </form>
 
   <main class="infoList">
-    <div *ngIf="(weatherData | async) as data; else spinner">
-      <h4>{{ data.location.name }} weather</h4>
-      <ul class="list-group">
-        <li class="list-group-item">Temperature: {{ data.current.temp_c }}°C ({{ data.current.temp_f }}°F)</li>
-        <li class="list-group-item">Humidity: {{ data.current.humidity }}%</li>
-        <li class="list-group-item">Wind Speed: {{ data.current.wind_kph }} km/h ({{ data.current.wind_mph }} mph)</li>
-        <li class="list-group-item">Weather Condition: {{ data.current.condition.text }}</li>
-      </ul>
-    </div>
+
+    <ng-container *ngIf="(weatherData | async) as data">
+
+      <div *ngIf="data">
+        <h4>{{ data.location.name }} weather</h4>
+        <ul class="list-group">
+          <li class="list-group-item">Temperature: {{ data.current.temp_c }}°C ({{ data.current.temp_f }}°F)</li>
+          <li class="list-group-item">Humidity: {{ data.current.humidity }}%</li>
+          <li class="list-group-item">Wind Speed: {{ data.current.wind_kph }} km/h ({{ data.current.wind_mph }} mph)</li>
+          <li class="list-group-item">Weather Condition: {{ data.current.condition.text }}</li>
+        </ul>
+
+        <div class="spinner" *ngIf="!data">
+          <h4>Loading...</h4>
+          <div class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
   </main>
 
-  <ng-template #spinner>
-    <article class="spinner">
-      <h4> Loading... </h4>
-      <div class="spinner-border text-secondary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </article>
-  </ng-template>
 
-</div>
-
-
-<div class="modal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
 </div>
