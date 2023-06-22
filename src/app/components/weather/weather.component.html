@@ -1,0 +1,56 @@
+<div class="weatherPage">
+  <h4 class="he">Weather App</h4>
+  <form [formGroup]="form">
+    <nav class="form-group">
+      <h4>Find your city to find out the weather</h4>
+      <div>
+        <input
+          placeholder="Find city"
+          class="form-control"
+          type="text"
+          formControlName="city"
+        />
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="findCertainCityWeather()"
+          [disabled]="form.invalid"
+        >
+          Find
+        </button>
+      </div>
+    </nav>
+
+    <nav>
+      <h4>Or select your city from the list</h4>
+      <div class="dropdown-center dropdownMenu">
+        <button
+          (click)="toggleDropdown()"
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Centered dropdown
+        </button>
+        <ul [class.show]="isDropdownOpen" class="dropdown-menu dropdown-menu-center">
+          <li class="dropdown-item" *ngFor="let city of cities" (click)="selectCity(city)">
+            {{ city }}
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </form>
+
+  <main class="infoList">
+    <div *ngIf="(weatherData | async) as data">
+      <h4>{{ data.location.name }} weather</h4>
+      <ul class="list-group">
+        <li class="list-group-item">A second item</li>
+        <li class="list-group-item">A third item</li>
+        <li class="list-group-item">A fourth item</li>
+        <li class="list-group-item">And a fifth one</li>
+      </ul>
+    </div>
+  </main>
+</div>
